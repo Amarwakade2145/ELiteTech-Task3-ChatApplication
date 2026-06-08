@@ -1,23 +1,32 @@
 import java.io.*;
 import java.net.*;
 
-public class ChatClient {
+public class ChatServer {
 
     public static void main(String[] args) {
 
         try {
+            ServerSocket serverSocket = new ServerSocket(6000);
 
-            Socket socket = new Socket("localhost", 6000);
+            System.out.println("================================");
+            System.out.println("SERVER STARTED");
+            System.out.println("Waiting for client...");
+            System.out.println("================================");
 
-            PrintWriter output =
-                    new PrintWriter(
-                    socket.getOutputStream(), true);
+            Socket socket = serverSocket.accept();
 
-            output.println("Hello Server!");
+            System.out.println("Client Connected!");
 
-            System.out.println("Message Sent Successfully!");
+            BufferedReader input =
+                    new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+
+            String message = input.readLine();
+
+            System.out.println("Client Says: " + message);
 
             socket.close();
+            serverSocket.close();
 
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
